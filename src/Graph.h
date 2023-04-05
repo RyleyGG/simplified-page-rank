@@ -1,5 +1,6 @@
 #include <vector>
 #include <map>
+#include <set>
 
 class Graph {
     private:
@@ -9,9 +10,9 @@ class Graph {
             and the value is a list of vertices adjacent to the key vertex.
         */
         std::map<std::string, std::vector<std::string>> adjList;
+        std::set<std::string> uniquePages;
     public:
         void PageRank(int n);
         void InsertEdge(std::string from, std::string to);
         std::vector<std::string> GetAdjacent(std::string vertex);
 };
-

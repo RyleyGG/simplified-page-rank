@@ -3,29 +3,29 @@
 #include <vector>
 #include <iostream>
 #include <iomanip>
+#include <set>
 #include "Graph.h"
 using namespace std;
 
 void Graph::PageRank(int n) {
     // Initializng to 1/|V|
-    const double initialRank = 1.0 / this->adjList.size();
-
-    // Applying initial PageRank values
+    const double initialRank = 1.0 / this->uniquePages.size();
     map<string, double> pageRank;
-    for (const auto& entry: this->adjList) {
-        pageRank[entry.first] = initialRank;
+
+    // Applying initial PageRank values. Include all unique pages.
+    for (const auto& entry: this->uniquePages) {
+        pageRank[entry] = initialRank;
     }
 
     /*
         Performing power iterations
-        In each iteration, the current rank is multiplied by summation of 1/outdegree of all vertices to which the current node is adjacent.
-        The summation is handled below via a multiplication factor which is applied after all pages are checked for references to the curPage
+        Note that rank = SUM(rank of incoming vertice / outdegrees of incoming vertex)
     */
     for (int i = 0; i < n - 1; i++) {
         map<string, double> newPageRank;
-        for (const auto& entry: this->adjList) {
-            const string& curPage = entry.first;
-            double newRank = pageRank[curPage];
+        for (const auto& entry: this->uniquePages) {
+            const string& curPage = entry;
+            double newRank = 0.0;
             double multFactor = 0.0;
 
             for (const auto& entry: this->adjList) {
@@ -33,10 +33,9 @@ void Graph::PageRank(int n) {
                     continue;
                 }
                 else if (std::count(entry.second.begin(), entry.second.end(), curPage)) { // if curPage is adjacent to iterated page
-                    multFactor += (1 / (double) entry.second.size());
+                    newRank += (pageRank[entry.first] / (double) entry.second.size());
                 }
             }
-            newRank *= multFactor;
             newPageRank[curPage] = newRank;
         }
 
@@ -51,6 +50,8 @@ void Graph::PageRank(int n) {
 
 void Graph::InsertEdge(string from, string to) {
    this->adjList[from].push_back(to);
+   this->uniquePages.insert(from);
+   this->uniquePages.insert(to);
 }
 
 vector<string> Graph::GetAdjacent(string vertex) {
