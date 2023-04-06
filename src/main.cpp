@@ -9,8 +9,7 @@ int main() {
     std::string from, to;
     std::cin >> lineNum;
     std::cin >> powerIters;
-    for(int i = 0; i < lineNum; i++)
-    {
+    for(int i = 0; i < lineNum; i++) {
         std::cin >> from;
         std::cin >> to;
         graph.InsertEdge(from, to);

@@ -53,17 +53,3 @@ void Graph::InsertEdge(string from, string to) {
    this->uniquePages.insert(from);
    this->uniquePages.insert(to);
 }
-
-vector<string> Graph::GetAdjacent(string vertex) {
-    vector<string> vertices;
-    if (this->adjList.find(vertex) == this->adjList.end()) { // base case
-        return vertices;
-    }
-
-    for (const auto& edge: this->adjList[vertex]) {
-        vertices.push_back(edge);
-    }
-
-    sort(vertices.begin(), vertices.end());
-    return vertices;
-}

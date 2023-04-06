@@ -14,5 +14,4 @@ class Graph {
     public:
         void PageRank(int n);
         void InsertEdge(std::string from, std::string to);
-        std::vector<std::string> GetAdjacent(std::string vertex);
 };
